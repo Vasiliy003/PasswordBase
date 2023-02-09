@@ -5,7 +5,6 @@ import json
 Form, Window = uic.loadUiType("UI.ui")
 with open("sign_base.json", "r") as f:
     data = json.load(f)
-print(data)
 
 
 def sign_click():
