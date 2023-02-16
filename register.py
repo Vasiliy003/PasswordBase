@@ -3,40 +3,45 @@ from PyQt5.QtWidgets import QApplication
 import json
 from hashlib import sha256
 
-Form, Window = uic.loadUiType("Register.ui")
-with open("sign_base.json", "r") as f:
-    data = json.load(f)
+
+class Register():
+    def __init__(self):
+        Form, Window = uic.loadUiType("Register.ui")
+        with open("sign_base.json", "r") as f:
+            self.data = json.load(f)
+        self.window = Window()
+        self.form = Form()
+        self.form.setupUi(self.window)
+        self.form.register_button.clicked.connect(self.register_btn_click)
+
+    def register_btn_click(self):
+        login = self.form.login_input.text()
+        password = self.form.password_input.text()
+        hash_password = sha256(password.encode("utf-8")).hexdigest()
+        check_pass = self.form.check_password_input.text()
+        if password != check_pass:
+            print("Пароли не совпадают")
+            return
+        elif login in self.data:
+            print("Логин уже занят")
+            return
+        else:
+            self.data[login] = hash_password
+            with open("sign_base.json", "w") as g:
+                json.dump(self.data, g)
+            print("Пользователь успешно зарегестрирован")
+            exit()
+
+    def show_window(self):
+        self.window.show()
+
+    def close_window(self):
+        self.window.close()
 
 
-def register_btn():
-    global data
-    login = form.login_input.text()
-    password = form.password_input.text()
-    hash_password = sha256(password.encode("utf-8")).hexdigest()
+if __name__ == "__main__":
+    app = QApplication([])
+    register_window = Register()
+    register_window.show_window()
 
-    check_pass = form.check_password_input.text()
-    if password != check_pass:
-        print("Пароли не совпадают")
-        return
-    elif login in data:
-        print("Логин уже занят")
-        return
-    else:
-        data[login] = hash_password
-        with open("sign_base.json", "w") as g:
-            json.dump(data, g)
-        print("Пользователь успешно зарегестрирован")
-        exit()
-
-
-app = QApplication([])
-window = Window()
-form = Form()
-form.setupUi(window)
-window.show()
-
-
-form.register_button.clicked.connect(register_btn)
-
-
-app.exec()
+    app.exec()

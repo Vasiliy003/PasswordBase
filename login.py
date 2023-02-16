@@ -2,52 +2,64 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication
 import json
 from hashlib import sha256
-
-Form, Window = uic.loadUiType("UI.ui")
-with open("sign_base.json", "r") as f:
-    data = json.load(f)
+import register
+import main
 
 
-def sign_click():
-    print(form.loginInput.text())
+class Login():
+    def __init__(self):
+        Form, Window = uic.loadUiType("UI.ui")
+        with open("sign_base.json", "r") as f:
+            self.data = json.load(f)
+        self.attempts = 3
+        self.window = Window()
+        self.form = Form()
+        self.form.setupUi(self.window)
+        self.register_window = register.Register()
+        self.main_window = main.Main()
+        self.form.sign.clicked.connect(self.check_log_pass)
+        self.form.passwordShow.stateChanged.connect(self.show_password)
+        self.form.register_acc_btn.clicked.connect(self.register_click)
 
+    def register_click(self):
+        self.register_window.show_window()
+        self.window.hide()
 
-def show_password():
-    state = form.passwordShow.isChecked()
-    if state:
-        form.passwordInput.setEchoMode(0)
-    else:
-        form.passwordInput.setEchoMode(2)
+    def main_start(self):
+        self.main_window.show_window()
+        self.window.hide()
 
-
-attempts = 3
-
-
-def check_log_pass():
-    global attempts
-    global data
-    login = form.loginInput.text()
-    password = form.passwordInput.text()
-    password_hash = sha256(password.encode("utf-8")).hexdigest()
-    if login in data and data[login] == password_hash:
-        print("Успешно")
-        exit()
-    else:
-        if attempts <= 1:
-            print("У вас закончились попытки для входа в систему. Попробуйте позже (никогда)")
-            exit()
+    def show_password(self):
+        state = self.form.passwordShow.isChecked()
+        if state:
+            self.form.passwordInput.setEchoMode(0)
         else:
-            attempts -= 1
-            print(f"Неверный логин или пароль. У вас осталось {str(attempts)} попыток!")
+            self.form.passwordInput.setEchoMode(2)
+
+    def check_log_pass(self):
+        login = self.form.loginInput.text()
+        password = self.form.passwordInput.text()
+        password_hash = sha256(password.encode("utf-8")).hexdigest()
+        if login in self.data and self.data[login] == password_hash:
+            self.main_start()
+        else:
+            if self.attempts <= 1:
+                print("У вас закончились попытки для входа в систему. Попробуйте позже (никогда)")
+                exit()
+            else:
+                self.attempts -= 1
+                print(f"Неверный логин или пароль. У вас осталось {str(self.attempts)} попыток!")
+
+    def show_window(self):
+        self.window.show()
+
+    def close_window(self):
+        self.window.close()
 
 
-app = QApplication([])
-window = Window()
-form = Form()
-form.setupUi(window)
-window.show()
+if __name__ == "__main__":
+    app = QApplication([])
+    login_window = Login()
+    login_window.show_window()
 
-form.sign.clicked.connect(check_log_pass)
-form.passwordShow.stateChanged.connect(show_password)
-
-app.exec()
+    app.exec()
