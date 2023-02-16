@@ -1,6 +1,7 @@
 from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication
 import json
+from hashlib import sha256
 
 Form, Window = uic.loadUiType("UI.ui")
 with open("sign_base.json", "r") as f:
@@ -27,7 +28,8 @@ def check_log_pass():
     global data
     login = form.loginInput.text()
     password = form.passwordInput.text()
-    if login in data and data[login] == password:
+    password_hash = sha256(password.encode("utf-8")).hexdigest()
+    if login in data and data[login] == password_hash:
         print("Успешно")
         exit()
     else:

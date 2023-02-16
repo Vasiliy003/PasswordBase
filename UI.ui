@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>100</y>
+      <y>70</y>
       <width>171</width>
       <height>41</height>
      </rect>
@@ -37,7 +37,7 @@
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>50</y>
+      <y>20</y>
       <width>171</width>
       <height>51</height>
      </rect>
@@ -56,7 +56,7 @@
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>150</y>
+      <y>120</y>
       <width>171</width>
       <height>51</height>
      </rect>
@@ -75,7 +75,7 @@
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>200</y>
+      <y>170</y>
       <width>171</width>
       <height>41</height>
      </rect>
@@ -100,7 +100,7 @@
     <property name="geometry">
      <rect>
       <x>240</x>
-      <y>200</y>
+      <y>170</y>
       <width>71</width>
       <height>41</height>
      </rect>
@@ -129,9 +129,9 @@
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>280</y>
+      <y>250</y>
       <width>251</width>
-      <height>141</height>
+      <height>71</height>
      </rect>
     </property>
     <property name="font">
@@ -142,6 +142,25 @@
     </property>
     <property name="text">
      <string>Войти</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="register_acc_btn">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>350</y>
+      <width>251</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Georgia</family>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Создать аккаунт</string>
     </property>
    </widget>
   </widget>
