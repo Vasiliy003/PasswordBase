@@ -19,6 +19,15 @@ class Main():
         self.form.add_password_btn.clicked.connect(self.new_password_add)
         self.table_init()
         self.form.Random_password_btn.clicked.connect(self.random_password_btn)
+        self.form.Tabs.keyPressEvent = self.key_press_event
+
+    def key_press_event(self, key):
+        if key.key() == 16777223 and self.form.Tabs.currentIndex() == 0:
+            row = self.form.tableWidget.currentRow()
+            del self.data[row - 1]
+            with open("password_base.json", "w") as g:
+                json.dump(self.data, g)
+            self.form.tableWidget.removeRow(row)
 
     def random_password_btn(self):
         password = ""
@@ -31,9 +40,8 @@ class Main():
             password += random.choice(high_latter)
             password += random.choice(lower_latter)
             password += random.choice(chars)
-        self.form.password_input.text = password
-        self.form.check_password_input.text = password
-        print(self.form.password_input.text)
+        self.form.password_input.setText(password)
+        self.form.check_password_input.setText(password)
 
     def table_init(self):
         self.form.tableWidget.setRowCount(len(self.data) + 1)
@@ -59,8 +67,8 @@ class Main():
     def new_password_add(self):
         site = self.form.site_input.text()
         login = self.form.login_input.text()
-        password = self.form.password_input.text
-        check_password = self.form.check_password_input.text
+        password = self.form.password_input.text()
+        check_password = self.form.check_password_input.text()
         note = self.form.note_text.toPlainText()
         if password != check_password:
             print("Пароли не совпадают")
@@ -76,9 +84,9 @@ class Main():
             print("Пароль был успешно добавлен в базу данных")
             return
 
-
-    def show_window(self):
+    def show_window(self, current_account):
         self.window.show()
+        print(current_account)
 
     def close_window(self):
         self.window.close()

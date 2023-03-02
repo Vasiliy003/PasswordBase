@@ -4,6 +4,7 @@ import json
 from hashlib import sha256
 import register
 import main
+from good_cypher import generate_key
 
 
 class Login():
@@ -26,7 +27,9 @@ class Login():
         self.window.hide()
 
     def main_start(self):
-        self.main_window.show_window()
+        password = self.form.passwordInput.text()
+        login = self.form.loginInput.text()
+        self.main_window.show_window(generate_key(password, login))
         self.window.hide()
 
     def show_password(self):

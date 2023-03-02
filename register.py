@@ -26,7 +26,10 @@ class Register():
             print("Логин уже занят")
             return
         else:
-            self.data[login] = hash_password
+            with open(f"{login}_db.json", "w") as g:
+                pass
+            account_info = {"password_hash": hash_password, "file_name": f"{login}_db.json"}
+            self.data[login] = account_info
             with open("sign_base.json", "w") as g:
                 json.dump(self.data, g)
             print("Пользователь успешно зарегестрирован")
