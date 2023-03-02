@@ -1,23 +1,66 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication, QTableWidgetItem
 import json
+from PyQt5 import QtCore
+import random
 
 
 class Main():
     def __init__(self):
         Form, Window = uic.loadUiType("Main.ui")
-        with open("password_base.json", "r") as f:
-            self.data = json.load(f)
+        try:
+            with open("password_base.json", "r") as f:
+                self.data = json.load(f)
+        except Exception:
+            self.data = []
         self.window = Window()
         self.form = Form()
         self.form.setupUi(self.window)
         self.form.add_password_btn.clicked.connect(self.new_password_add)
+        self.table_init()
+        self.form.Random_password_btn.clicked.connect(self.random_password_btn)
+
+    def random_password_btn(self):
+        password = ""
+        numbers = "0123456789"
+        high_latter = "QWERTYUIOPASDFGHJKLZXCVBNM"
+        lower_latter = "qwertyuiopasdfghjklzxcvbnm"
+        chars = "!@#$%^&*()+=-:;№"
+        for i in range(2):
+            password += random.choice(numbers)
+            password += random.choice(high_latter)
+            password += random.choice(lower_latter)
+            password += random.choice(chars)
+        self.form.password_input.text = password
+        self.form.check_password_input.text = password
+        print(self.form.password_input.text)
+
+    def table_init(self):
+        self.form.tableWidget.setRowCount(len(self.data) + 1)
+        for i in range(1, 3):
+            self.form.tableWidget.setColumnWidth(i, 150)
+        self.form.tableWidget.setColumnWidth(0, 100)
+        self.form.tableWidget.setColumnWidth(3, 300)
+        self.form.tableWidget.setHorizontalHeaderLabels(["Сервис", "Логин", "Пароль", "Заметка"])
+        for i in range(len(self.data)):
+            site_item = QTableWidgetItem(self.data[i][0])
+            site_item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            login_item = QTableWidgetItem(self.data[i][1]["login"])
+            login_item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            password_item = QTableWidgetItem(self.data[i][1]["password"])
+            password_item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            note_item = QTableWidgetItem(self.data[i][1]["note"])
+            note_item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            self.form.tableWidget.setItem(i, 0, site_item)
+            self.form.tableWidget.setItem(i, 1, login_item)
+            self.form.tableWidget.setItem(i, 2, password_item)
+            self.form.tableWidget.setItem(i, 3, note_item)
 
     def new_password_add(self):
         site = self.form.site_input.text()
         login = self.form.login_input.text()
-        password = self.form.password_input.text()
-        check_password = self.form.check_password_input.text()
+        password = self.form.password_input.text
+        check_password = self.form.check_password_input.text
         note = self.form.note_text.toPlainText()
         if password != check_password:
             print("Пароли не совпадают")
@@ -27,7 +70,7 @@ class Main():
             return
         else:
             site_info = {"login": login, "password": password, "note": note}
-            self.data[site] = site_info
+            self.data.append([site, site_info])
             with open("password_base.json", "w") as g:
                 json.dump(self.data, g)
             print("Пароль был успешно добавлен в базу данных")
