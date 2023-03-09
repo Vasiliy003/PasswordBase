@@ -33,7 +33,7 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
 }</component>
-  <component name="RunManager" selected="Python.register">
+  <component name="RunManager" selected="Python.good_cypher">
     <configuration name="Candies to People" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PasswordBase" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -141,8 +141,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.register" />
         <item itemvalue="Python.good_cypher" />
+        <item itemvalue="Python.register" />
         <item itemvalue="Python.login (1)" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.Candies to People" />

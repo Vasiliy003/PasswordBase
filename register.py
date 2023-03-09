@@ -2,6 +2,7 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication
 import json
 from hashlib import sha256
+from good_cypher import encrypt, generate_key
 
 
 class Register():
@@ -26,8 +27,7 @@ class Register():
             print("Логин уже занят")
             return
         else:
-            with open(f"{login}_db.json", "w") as g:
-                pass
+            encrypt(f"{login}_db.json", generate_key(password, login))
             account_info = {"password_hash": hash_password, "file_name": f"{login}_db.json"}
             self.data[login] = account_info
             with open("sign_base.json", "w") as g:
