@@ -27,7 +27,8 @@ class Register():
             print("Логин уже занят")
             return
         else:
-            encrypt(f"{login}_db.json", generate_key(password, login))
+
+            encrypt(f"{login}_db.json", generate_key(password, login), [])
             account_info = {"password_hash": hash_password, "file_name": f"{login}_db.json"}
             self.data[login] = account_info
             with open("sign_base.json", "w") as g:

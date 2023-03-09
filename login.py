@@ -29,7 +29,8 @@ class Login():
     def main_start(self):
         password = self.form.passwordInput.text()
         login = self.form.loginInput.text()
-        self.main_window.show_window(generate_key(password, login))
+        self.main_window.show_window()
+        self.main_window.load_data({"login": login, "password": password})
         self.window.hide()
 
     def show_password(self):
@@ -43,7 +44,7 @@ class Login():
         login = self.form.loginInput.text()
         password = self.form.passwordInput.text()
         password_hash = sha256(password.encode("utf-8")).hexdigest()
-        if login in self.data and self.data[login] == password_hash:
+        if login in self.data and self.data[login]["password_hash"] == password_hash:
             self.main_start()
         else:
             if self.attempts <= 1:

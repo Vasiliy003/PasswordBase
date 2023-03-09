@@ -3,30 +3,35 @@ from PyQt5.QtWidgets import QApplication, QTableWidgetItem
 import json
 from PyQt5 import QtCore
 import random
+from good_cypher import decrypt, encrypt, generate_key
 
 
 class Main():
     def __init__(self):
         Form, Window = uic.loadUiType("Main.ui")
-        try:
-            with open("password_base.json", "r") as f:
-                self.data = json.load(f)
-        except Exception:
-            self.data = []
+        self.data = None
         self.window = Window()
         self.form = Form()
         self.form.setupUi(self.window)
         self.form.add_password_btn.clicked.connect(self.new_password_add)
-        self.table_init()
         self.form.Random_password_btn.clicked.connect(self.random_password_btn)
         self.form.Tabs.keyPressEvent = self.key_press_event
+        self.current_account = None
+
+    def save_data(self):
+        encrypt(f'{self.current_account["login"]}_db.json', generate_key(self.current_account["password"], self.current_account["login"]), self.data)
+
+    def load_data(self, current_account):
+        with open(f'{current_account["login"]}_db.json', "r") as g:
+            self.data = decrypt(current_account["login"] + "_db.json", generate_key(current_account["password"], current_account["login"]))
+            self.table_init()
+            self.current_account = current_account
 
     def key_press_event(self, key):
         if key.key() == 16777223 and self.form.Tabs.currentIndex() == 0:
             row = self.form.tableWidget.currentRow()
-            del self.data[row - 1]
-            with open("password_base.json", "w") as g:
-                json.dump(self.data, g)
+            del self.data[row]
+            self.save_data()
             self.form.tableWidget.removeRow(row)
 
     def random_password_btn(self):
@@ -79,14 +84,13 @@ class Main():
         else:
             site_info = {"login": login, "password": password, "note": note}
             self.data.append([site, site_info])
-            with open("password_base.json", "w") as g:
-                json.dump(self.data, g)
+            self.save_data()
             print("Пароль был успешно добавлен в базу данных")
+            self.table_init()
             return
 
-    def show_window(self, current_account):
+    def show_window(self):
         self.window.show()
-        print(current_account)
 
     def close_window(self):
         self.window.close()
