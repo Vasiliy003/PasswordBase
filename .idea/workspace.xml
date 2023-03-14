@@ -34,7 +34,7 @@
   }
 }</component>
   <component name="RunManager" selected="Python.login (1)">
-    <configuration name="Candies to People" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="debug" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PasswordBase" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -46,7 +46,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Candies to People.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/debug.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -143,9 +143,9 @@
       <list>
         <item itemvalue="Python.login (1)" />
         <item itemvalue="Python.main" />
-        <item itemvalue="Python.register" />
         <item itemvalue="Python.good_cypher" />
-        <item itemvalue="Python.Candies to People" />
+        <item itemvalue="Python.register" />
+        <item itemvalue="Python.debug" />
       </list>
     </recent_temporary>
   </component>

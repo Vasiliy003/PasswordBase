@@ -4,6 +4,7 @@ import json
 from PyQt5 import QtCore
 import random
 from good_cypher import decrypt, encrypt, generate_key
+import debug
 
 
 class Main():
@@ -17,6 +18,11 @@ class Main():
         self.form.Random_password_btn.clicked.connect(self.random_password_btn)
         self.form.Tabs.keyPressEvent = self.key_press_event
         self.current_account = None
+        self.debug_window = debug.Debug()
+
+    def debug_window_show(self, text):
+        self.debug_window.show_window()
+        self.debug_window.load_data(text)
 
     def save_data(self):
         encrypt(f'{self.current_account["login"]}_db.json', generate_key(self.current_account["password"], self.current_account["login"]), self.data)
@@ -24,6 +30,7 @@ class Main():
     def load_data(self, current_account):
         with open(f'{current_account["login"]}_db.json', "r") as g:
             self.data = decrypt(current_account["login"] + "_db.json", generate_key(current_account["password"], current_account["login"]))
+            self.data = self.data.decode('UTF-8')
             self.table_init()
             self.current_account = current_account
 
@@ -76,16 +83,16 @@ class Main():
         check_password = self.form.check_password_input.text()
         note = self.form.note_text.toPlainText()
         if password != check_password:
-            print("Пароли не совпадают")
+            self.debug_window_show("Пароли не совпадают")
             return
         elif site in self.data:
-            print("Сайт уже внесён в базу данных")
+            self.debug_window_show("Сайт уже внесён в базу данных")
             return
         else:
             site_info = {"login": login, "password": password, "note": note}
             self.data.append([site, site_info])
             self.save_data()
-            print("Пароль был успешно добавлен в базу данных")
+            self.debug_window_show("Пароль был успешно добавлен в базу данных")
             self.table_init()
             return
 

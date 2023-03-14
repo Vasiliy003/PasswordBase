@@ -32,6 +32,6 @@ def decrypt(filename, key):
     with open(filename, 'rb') as g:
         encrypted_data = g.read()
     decrypted_data = f.decrypt(encrypted_data)
-    return json.loads(decrypted_data)
+    return decrypted_data
 
 #print(decrypt("Georgia_db.json", generate_key("1", "gg")))
