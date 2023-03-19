@@ -39,8 +39,8 @@ class Register():
             self.data[login] = account_info
             with open("sign_base.json", "w") as g:
                 json.dump(self.data, g)
-            #print("Пользователь успешно зарегестрирован")
-            exit()
+            print("Пользователь успешно зарегестрирован")
+            self.window.hide()
 
     def show_window(self):
         self.window.show()

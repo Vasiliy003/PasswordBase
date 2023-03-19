@@ -30,7 +30,7 @@ class Main():
     def load_data(self, current_account):
         with open(f'{current_account["login"]}_db.json', "r") as g:
             self.data = decrypt(current_account["login"] + "_db.json", generate_key(current_account["password"], current_account["login"]))
-            self.data = self.data.decode('UTF-8')
+            self.data = json.loads(self.data)
             self.table_init()
             self.current_account = current_account
 
@@ -62,6 +62,7 @@ class Main():
         self.form.tableWidget.setColumnWidth(0, 100)
         self.form.tableWidget.setColumnWidth(3, 300)
         self.form.tableWidget.setHorizontalHeaderLabels(["Сервис", "Логин", "Пароль", "Заметка"])
+        print(type(self.data))
         for i in range(len(self.data)):
             site_item = QTableWidgetItem(self.data[i][0])
             site_item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
@@ -82,7 +83,10 @@ class Main():
         password = self.form.password_input.text()
         check_password = self.form.check_password_input.text()
         note = self.form.note_text.toPlainText()
-        if password != check_password:
+        if not site or not login or not password:
+            exit()
+
+        elif password != check_password:
             self.debug_window_show("Пароли не совпадают")
             return
         elif site in self.data:

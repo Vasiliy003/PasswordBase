@@ -55,8 +55,8 @@ class Login():
         else:
             if self.attempts <= 1:
                 pass
-                #self.debug_window_show("У вас закончились попытки для входа в систему. Попробуйте позже (никогда)")
-                exit()
+                self.debug_window_show("У вас закончились попытки для входа в систему. Попробуйте позже (никогда)")
+                self.window.hide()
 
             else:
                 self.attempts -= 1
